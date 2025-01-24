@@ -88,133 +88,136 @@ class _MyAddEditState extends State<MyAddEdit> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          Consumer<MyAdController>(
-            builder: (context, value, child) {
-              return SingleChildScrollView(
-                padding:
-                    EdgeInsets.only(left: 16, top: 10, right: 16, bottom: 16),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Stack(
-                        children: [
-                          profileImage(image),
-                          // if (sharedPref.getString(LOGIN_TYPE) != LoginTypeGoogle)
-                        ],
-                      ),
-                      SizedBox(height: 20),
-                      AppTextField(
-                        readOnly: false,
-                        controller: AddName,
-                        textFieldType: TextFieldType.NAME,
-                        focus: _AddName,
-                        nextFocus: _adddescription,
-                        decoration: inputDecoration(label: 'Add Title'),
-                        onTap: () {},
-                      ),
-                      SizedBox(height: 20),
-                      AppTextField(
-                        readOnly: false,
-                        controller: AddDescriptionController,
-                        textFieldType: TextFieldType.ADDRESS,
-                        focus: _adddescription,
-                        nextFocus: _AddPrice,
-                        decoration: inputDecoration(label: 'Add Description'),
-                        onTap: () {},
-                      ),
-                      SizedBox(height: 20),
-                      SizedBox(height: 20),
-                      AppTextField(
-                        readOnly: false,
-                        controller: addpriceController,
-                        textFieldType: TextFieldType.PRICE,
-                        focus: _AddPrice,
-                        nextFocus: _AddPrice,
-                        decoration: inputDecoration(label: 'Ad Price'),
-                        onTap: () {},
-                      ),
-                      SizedBox(height: 20),
-                      ConditionDropdown(
-                        defaultValue: addConditionController.text,
-                        onChanged: (String? condition) {
-                          addConditionController.text = condition ?? '';
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(),
+        body: Stack(
+          children: [
+            Consumer<MyAdController>(
+              builder: (context, value, child) {
+                return SingleChildScrollView(
+                  padding:
+                      EdgeInsets.only(left: 16, top: 10, right: 16, bottom: 16),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Stack(
+                          children: [
+                            profileImage(image),
+                            // if (sharedPref.getString(LOGIN_TYPE) != LoginTypeGoogle)
+                          ],
+                        ),
+                        SizedBox(height: 20),
+                        AppTextField(
+                          readOnly: false,
+                          controller: AddName,
+                          textFieldType: TextFieldType.NAME,
+                          focus: _AddName,
+                          nextFocus: _adddescription,
+                          decoration: inputDecoration(label: 'Add Title'),
+                          onTap: () {},
+                        ),
+                        SizedBox(height: 20),
+                        AppTextField(
+                          readOnly: false,
+                          controller: AddDescriptionController,
+                          textFieldType: TextFieldType.ADDRESS,
+                          focus: _adddescription,
+                          nextFocus: _AddPrice,
+                          decoration: inputDecoration(label: 'Add Description'),
+                          onTap: () {},
+                        ),
+                        SizedBox(height: 20),
+                        SizedBox(height: 20),
+                        AppTextField(
+                          readOnly: false,
+                          controller: addpriceController,
+                          textFieldType: TextFieldType.PRICE,
+                          focus: _AddPrice,
+                          nextFocus: _AddPrice,
+                          decoration: inputDecoration(label: 'Ad Price'),
+                          onTap: () {},
+                        ),
+                        SizedBox(height: 20),
+                        ConditionDropdown(
+                          defaultValue: addConditionController.text,
+                          onChanged: (String? condition) {
+                            addConditionController.text = condition ?? '';
 
-                          print('Selected condition: $condition');
-                        },
-                      ),
-                      SizedBox(height: 20),
-                      NegotiableStatusDropdown(
-                        defaultValue: negotiable,
-                        onChanged: (int value) {
-                          negotiable = value;
+                            print('Selected condition: $condition');
+                          },
+                        ),
+                        SizedBox(height: 20),
+                        NegotiableStatusDropdown(
+                          defaultValue: negotiable,
+                          onChanged: (int value) {
+                            negotiable = value;
 
-                          print('Selected value: $value');
-                        },
-                      ),
-                      SizedBox(height: 20),
-                      Center(
-                        child: isLoading == false
-                            ? CustomRoundedButton(
-                                widthPercentage: 0.55,
-                                backgroundColor: AppColors.PRIMARY_COLOR,
-                                buttonTitle: 'Update',
-                                radius: 10,
-                                showBorder: false,
-                                height: 50,
-                                onTap: () async {
-                                  Logger().i(addConditionController.text);
-                                  final usercontroller =
-                                      Provider.of<Userdatacontroller>(context,
-                                          listen: false);
-                                  if (_formKey.currentState!.validate()) {
-                                    setState(() {
-                                      isLoading = true;
-                                    });
-
-                                    ApiService()
-                                        .UpdateAdd(
-                                            widget.addid,
-                                            AddName.text,
-                                            AddDescriptionController.text,
-                                            addConditionController.text,
-                                            addpriceController.text,
-                                            negotiable,
-                                            context)
-                                        .then((_) {
-                                      setState(() async {
-                                        AddName.clear();
-                                        AddDescriptionController.clear();
-                                        addConditionController.clear();
-                                        addpriceController.clear();
-                                        addphonenumber.clear();
-
-                                        await value.fetchProducts(context,
-                                            usercontroller.userData!.user.id);
-                                        isLoading = false;
-                                        image = '';
-                                      });
-                                    }).catchError((_) {
+                            print('Selected value: $value');
+                          },
+                        ),
+                        SizedBox(height: 20),
+                        Center(
+                          child: isLoading == false
+                              ? CustomRoundedButton(
+                                  widthPercentage: 0.55,
+                                  backgroundColor: AppColors.PRIMARY_COLOR,
+                                  buttonTitle: 'Update',
+                                  radius: 10,
+                                  showBorder: false,
+                                  height: 50,
+                                  onTap: () async {
+                                    Logger().i(addConditionController.text);
+                                    final usercontroller =
+                                        Provider.of<Userdatacontroller>(context,
+                                            listen: false);
+                                    if (_formKey.currentState!.validate()) {
                                       setState(() {
-                                        isLoading = false;
+                                        isLoading = true;
                                       });
-                                    });
-                                  }
-                                },
-                              )
-                            : Center(child: CircularProgressContainer()),
-                      )
-                    ],
+
+                                      ApiService()
+                                          .UpdateAdd(
+                                              widget.addid,
+                                              AddName.text,
+                                              AddDescriptionController.text,
+                                              addConditionController.text,
+                                              addpriceController.text,
+                                              negotiable,
+                                              context)
+                                          .then((_) {
+                                        setState(() async {
+                                          AddName.clear();
+                                          AddDescriptionController.clear();
+                                          addConditionController.clear();
+                                          addpriceController.clear();
+                                          addphonenumber.clear();
+
+                                          await value.fetchProducts(context,
+                                              usercontroller.userData!.user.id);
+                                          isLoading = false;
+                                          image = '';
+                                        });
+                                      }).catchError((_) {
+                                        setState(() {
+                                          isLoading = false;
+                                        });
+                                      });
+                                    }
+                                  },
+                                )
+                              : Center(child: CircularProgressContainer()),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-              );
-            },
-          )
-        ],
+                );
+              },
+            )
+          ],
+        ),
       ),
     );
   }
